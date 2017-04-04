@@ -24,13 +24,13 @@ contract PresaleToken {
 
 
 
-    //Presale Cup is 1 800 ETH
+    //Presale Cup is ~ 1 800 ETH
     ///During Presale Phase : 1 eth = 17 presale tokens
     //Presale Cup in $ is ~ 75 600$
 
     uint public PRICE = 17; 
 
-    uint public TOKEN_SUPPLY_LIMIT = 30600 * (1 ether / 1 wei);
+    uint public TOKEN_SUPPLY_LIMIT = 30000 * (1 ether / 1 wei);
 
 
 
