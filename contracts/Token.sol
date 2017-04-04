@@ -3,9 +3,10 @@ pragma solidity ^0.4.4;
 
 // ERC20 token interface is implemented only partially.
 
-// hence some functions are left undefined:
+//  some functions are left undefined:
 //  - transfer, transferFrom,
 //  - approve, allowance.
+// hence  an economical incentive to increase the value of the token, and investors protection from the risk of immediate token dumping following ICO
 
 contract PresaleToken {
 
@@ -15,25 +16,25 @@ contract PresaleToken {
     }
 
 
-    /*/
-     *  Constants
-    /*/
+   
 
     string public name = "Dobi Presale Token";
     string public symbol = "Dobi";
     uint   public decimals = 18;
 
-    uint public PRICE = 200; // 
 
-   
+
+    //Presale Cup is 1 800 ETH
+    ///During Presale Phase : 1 eth = 17 presale tokens
+    //Presale Cup in $ is ~ 75 600$
+
+    uint public PRICE = 17; 
+
+    uint public TOKEN_SUPPLY_LIMIT = 30600 * (1 ether / 1 wei);
+
+
+
     
-    uint public TOKEN_SUPPLY_LIMIT = 606000 * (1 ether / 1 wei);
-
-
-
-    /*/
-     *  Token state
-    /*/
 
     enum Phase {
         Created,
@@ -44,7 +45,9 @@ contract PresaleToken {
     }
 
     Phase public currentPhase = Phase.Created;
-    uint public totalSupply = 0; // amount of tokens already sold
+
+    // amount of tokens already sold
+    uint public totalSupply = 0; 
 
     // Token manager has exclusive priveleges to call administrative
     // functions on this contract.
@@ -59,18 +62,14 @@ contract PresaleToken {
     modifier onlyCrowdsaleManager() { if(msg.sender != crowdsaleManager) throw; _; }
 
 
-    /*/
-     *  Events
-    /*/
+    
 
     event LogBuy(address indexed owner, uint value);
     event LogBurn(address indexed owner, uint value);
     event LogPhaseSwitch(Phase newPhase);
 
 
-    /*/
-     *  Public functions
-    /*/
+    
 
     function() payable {
         buyTokens(msg.sender);
@@ -78,7 +77,7 @@ contract PresaleToken {
 
    
     function buyTokens(address _buyer) public payable {
-        // Available only if presale is running.
+        // Available only if presale is in progress.
         if(currentPhase != Phase.Running) throw;
 
         if(msg.value == 0) throw;
@@ -117,9 +116,7 @@ contract PresaleToken {
     }
 
 
-    /*/
-     *  Administrative functions
-    /*/
+    
 
     function setPresalePhase(Phase _nextPhase) public
         onlyTokenManager
